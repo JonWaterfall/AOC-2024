@@ -1,2 +1,6 @@
 /bin
 /obj
+
+# leave examples provided by AoC text (required by tests)
+*input.txt
+!*exampleinput.txt
