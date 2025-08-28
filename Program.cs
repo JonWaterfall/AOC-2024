@@ -4,24 +4,29 @@ class MyProgram
 {
 static int Main(string[] args)
 {
-    String? argstring = args.ToString();
-    if (argstring == null)
+    if (args.Length == 0)
     {
-        Console.WriteLine("whole number 1-25 required as an argument");
+        Console.WriteLine("No argument found. Number+letter [1-25][a-b] required as the first argument");
         return 1;
     }
+    String dayToRun = args[0];
     try
     {
-        int daytorun = Int32.Parse(argstring);
-
         // run the calendar day code
+        switch (dayToRun)
+        {
+            case "1a":
+                Console.WriteLine(Day01.Part1("./inputs/day01input.txt"));
+                break;
+            default:
+                Console.WriteLine("Invalid argument. Number+letter [1-25][a-b] required as the first argument");
+                return 1;
+        }
     }
     catch (System.Exception e)
     {
-        Console.WriteLine("whole number 1-25 required as an argument");
         Console.WriteLine(e.Message);
         return 1;
-        throw;
     }
 
     return 0;
