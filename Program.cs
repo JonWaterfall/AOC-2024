@@ -21,6 +21,9 @@ static int Main(string[] args)
             case "1b":
                 Console.WriteLine(Day01.Part2("./inputs/day01input.txt"));
                 break;
+            case "2a":
+                Console.WriteLine(Day02.Part1("./inputs/day02input.txt"));
+                break;
             default:
                 Console.WriteLine("Invalid argument. Number+letter [1-25][a-b] required as the first argument");
                 return 1;
