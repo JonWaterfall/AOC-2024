@@ -2,6 +2,10 @@
  * The task is to read each row in the input file and check that all numbers are in ascending or descending order
  * Additionally, any two adjacent numbers may not be the same or deffer by more than three
  * Count each row that is valid then report the total
+ *
+ * Part 2 lets us remove a single number from a line in the input and re-evaluate it. 
+ * I have to assume that if the second number is removed that whether a line is ascending or descending might change.
+ * ex: 7 9 6 5 4 can be valid by removing the 9, and the line changes from ascending to descending.
  */
 
  static class Day02
