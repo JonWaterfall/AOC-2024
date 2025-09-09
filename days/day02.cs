@@ -43,7 +43,7 @@ static class Day02
                     // But because I can't break to an outer loop like in Rust, goto seems polite enough for that usecase.
                     goto skipLine;
                 }
-                
+
                 int num1 = Int32.Parse(splitLine[i]);
                 int num2 = Int32.Parse(splitLine[i + 1]);
                 if (num1 == num2 || Math.Abs(num1 - num2) > 3)
@@ -61,4 +61,97 @@ static class Day02
 
         return validLines;
     }
- }
+
+    public static int Part2(string filePath)
+    {
+        int validLines = 0;
+        int ascentCount;
+        int descentCount; // potential issue with first entry error?
+        int duplicateCount;
+        using StreamReader r = new StreamReader(filePath);
+        string? line;
+
+        while ((line = r.ReadLine()) != null)
+        {
+            ascentCount = 0;
+            descentCount = 0;
+            duplicateCount = 0;
+            string[] splitLineString = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+            List<int> splitLineInt = new List<int>(splitLineString.Length);
+
+            // parse once to make reading easier.
+            for (int i = 0; i < splitLineString.Length; i++)
+            {
+                splitLineInt.Add(Int32.Parse(splitLineString[i]));
+            }
+
+            //first pass
+            for (int i = 0; i < splitLineInt.Count - 1; i++)
+            {
+                if (splitLineInt[i] > splitLineInt[i + 1])
+                    ascentCount++;
+                else if (splitLineInt[i] < splitLineInt[i + 1])
+                    descentCount++;
+                else if (splitLineInt[i] == splitLineInt[i + 1])
+                    duplicateCount++;
+            }
+
+            // discard line if too many errors
+            if (duplicateCount > 1)
+                continue;
+            else if ((ascentCount < descentCount) && ((ascentCount + duplicateCount) > 1))
+                continue;
+            else if ((ascentCount > descentCount) && ((descentCount + duplicateCount) > 1))
+                continue;
+
+            //second pass
+            if (IsValidLine(splitLineInt))
+            {
+                validLines++;
+                continue;
+            }
+            for (int i = 0; i < splitLineInt.Count; i++)
+            {
+                List<int> miniList = splitLineInt.ExceptIndex(i);
+                if (IsValidLine(miniList))
+                {
+                    validLines++;
+                    break;
+                }
+            }
+        } // while ((line = r.ReadLine()) != null)
+
+        return validLines;
+    }
+
+    private static bool IsValidLine(List<int> intLine)
+    {
+        bool isAscending = true;
+        bool isDescending = true;
+
+        for (int i = 0; i < intLine.Count - 1; i++)
+        {
+            if (intLine[i] > intLine[i + 1])
+            {
+                isAscending = false;
+            }
+            else if (intLine[i] < intLine[i + 1])
+            {
+                isDescending = false;
+            }
+            if (!isAscending && !isDescending)
+            {
+                return false;
+            }
+
+            // check for same or too far off
+            int num1 = intLine[i];
+            int num2 = intLine[i + 1];
+            if (num1 == num2 || Math.Abs(num1 - num2) > 3)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+}
