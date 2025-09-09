@@ -39,16 +39,17 @@ static class Day02
                 }
                 if (!isAscending && !isDescending)
                 {
-                    // At school I was taught to "never" use goto in c/c++. 
-                    // But because I can't break to an outer loop like in Rust, goto seems polite enough for that usecase.
-                    goto skipLine;
+                    break;
                 }
 
                 int num1 = Int32.Parse(splitLine[i]);
                 int num2 = Int32.Parse(splitLine[i + 1]);
                 if (num1 == num2 || Math.Abs(num1 - num2) > 3)
                 {
-                    goto skipLine;
+                    // bypass validLines increment without using goto keyword
+                    isAscending = false;
+                    isDescending = false;
+                    break;
                 }
             }
             if (isAscending || isDescending)
@@ -56,7 +57,6 @@ static class Day02
                 // Console.WriteLine($"Valid line found {line}");
                 validLines++;
             }
-        skipLine:;
         }
 
         return validLines;
